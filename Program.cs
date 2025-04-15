@@ -51,6 +51,17 @@ internal class Program
         builder.Services.AddAutoMapper(typeof(Program).Assembly);
 
         var app = builder.Build();
+        app.UseStaticFiles();
+         app.UseRouting();
+
+          app.UseEndpoints(endpoints =>
+         {
+           endpoints.MapControllerRoute(
+          name: "default",
+          pattern: "{controller}/{action=Index}/{id?}");
+
+         endpoints.MapFallbackToFile("index.html");
+        });
 
         // Configure the HTTP request pipeline.
         if (app.Environment.IsDevelopment())
@@ -64,7 +75,7 @@ internal class Program
         app.UseAuthentication();
         app.UseAuthorization();
         app.UseCors(x => x.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod());
-        app.MapControllers();
+         app.MapControllers();
 
         app.Run();
     }
